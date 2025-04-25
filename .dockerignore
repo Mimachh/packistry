@@ -2,6 +2,5 @@ vendor
 *.env
 !.env.example
 tests
-storage/app
 storage/logs/laravel.log
 database/database.sqlite

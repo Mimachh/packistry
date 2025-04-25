@@ -4,7 +4,6 @@ LABEL org.opencontainers.image.source="https://github.com/packistry/packistry"
 LABEL org.opencontainers.image.description="Packistry is a Composer repository for PHP packages Packistry is a Composer repository for PHP packages"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 
-
 RUN apk add --no-cache \
     $PHPIZE_DEPS \
     linux-headers ca-certificates curl gnupg git unzip supervisor \
@@ -53,12 +52,6 @@ COPY ./docker/packistry /usr/bin
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN mv dist/* public/
-
-WORKDIR /var/www/html
-
-RUN mkdir -p storage/app/public storage/app/private \
-    && chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
 
 ENV USER="packistry"
 ENV GROUP="packistry"
