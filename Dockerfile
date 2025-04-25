@@ -4,6 +4,7 @@ LABEL org.opencontainers.image.source="https://github.com/packistry/packistry"
 LABEL org.opencontainers.image.description="Packistry is a Composer repository for PHP packages Packistry is a Composer repository for PHP packages"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 
+
 RUN apk add --no-cache \
     $PHPIZE_DEPS \
     linux-headers ca-certificates curl gnupg git unzip supervisor \
