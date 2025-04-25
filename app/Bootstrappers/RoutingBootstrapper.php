@@ -11,9 +11,6 @@ class RoutingBootstrapper
 {
     public function __invoke(Router $router): void
     {
-
-        $router->middleware('web')
-            ->group(base_path('routes/web.php'));
         $router->middleware('api')
             ->group(base_path('routes/api.php'));
 

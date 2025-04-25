@@ -1,6 +1,6 @@
 FROM php:8.4-fpm-alpine AS base
 
-LABEL org.opencontainers.image.source="https://github.com/packistry/packistry"
+LABEL org.opencontainers.image.source="https://github.com/Mimachh/packistry"
 LABEL org.opencontainers.image.description="Packistry is a Composer repository for PHP packages Packistry is a Composer repository for PHP packages"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 
@@ -37,7 +37,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --verbose --prefer-dist --no-progress --no-interaction --no-dev --no-scripts
 
 COPY . .
-RUN composer dump-autoload
+RUN composer dump-autoload --optimize
 RUN rm -rf frontend
 
 FROM base AS runner
