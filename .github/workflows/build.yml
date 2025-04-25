@@ -24,7 +24,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Extract Docker Metadata
         id: meta-amd
@@ -41,7 +41,7 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/packistry/packistry:latest-amd64
+          tags: ghcr.io/${{ secrets.repository_owner_lowercase }}/packistry:latest
           labels: ${{ steps.meta-amd.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -60,7 +60,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Extract Docker Metadata
         id: meta-arm
@@ -77,7 +77,7 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ghcr.io/packistry/packistry:latest-arm64
+          tags: ghcr.io/${{ secrets.repository_owner_lowercase }}/packistry:latest
           labels: ${{ steps.meta-arm.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -97,7 +97,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Extract Final Metadata
         id: meta-final
@@ -113,6 +113,6 @@ jobs:
           for TAG in $(echo "${{ steps.meta-final.outputs.tags }}" | tr ',' ' '); do
             docker buildx imagetools create \
               --tag $TAG \
-              ghcr.io/packistry/packistry:latest-amd64 \
-              ghcr.io/packistry/packistry:latest-arm64
+              ghcr.io/${{ secrets.repository_owner_lowercase }}/packistry:latest \
+              ghcr.io/${{ secrets.repository_owner_lowercase }}/packistry:latest
           done
