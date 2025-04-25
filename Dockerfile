@@ -37,7 +37,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --verbose --prefer-dist --no-progress --no-interaction --no-dev --no-scripts
 
 COPY . .
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload
 RUN rm -rf frontend
 
 FROM base AS runner
@@ -52,6 +52,12 @@ COPY ./docker/packistry /usr/bin
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN mv dist/* public/
+
+WORKDIR /var/www/html
+
+RUN mkdir -p storage/app/public storage/app/private \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
 ENV USER="packistry"
 ENV GROUP="packistry"
