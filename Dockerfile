@@ -53,6 +53,12 @@ COPY ./docker/packistry /usr/bin
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN mv dist/* public/
 
+WORKDIR /var/www/html
+
+RUN mkdir -p storage/app/public storage/app/private \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
 ENV USER="packistry"
 ENV GROUP="packistry"
 
