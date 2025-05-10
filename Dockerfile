@@ -8,6 +8,7 @@ RUN apk add --no-cache \
     $PHPIZE_DEPS \
     linux-headers ca-certificates curl gnupg git unzip supervisor \
     oniguruma-dev libzip-dev libpng-dev libjpeg-turbo-dev icu-dev envsubst \
+    mysql-client \
     && docker-php-ext-configure gd --enable-gd --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring zip gd intl opcache sockets pcntl
 
