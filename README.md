@@ -83,6 +83,61 @@ Packistry is built on a solid foundation of well-maintained dependencies from bo
 
 Please review [our security policy](./SECURITY.md) on how to report security vulnerabilities.
 
+### Mon compose.yml
+```Dockerfile
+services:
+  packistry:
+    image: ghcr.io/mimachh/packistry:0.2.3
+    restart: unless-stopped
+    environment:
+      - TRUSTED_PROXIES=${TRUSTED_PROXIES}
+      - APP_KEY=${APP_KEY}
+      # Uncomment and set APP_URL in .env if not running on http://localhost
+      - APP_URL=${APP_URL}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - MAIL_MAILER=${MAIL_MAILER}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
+      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+      - MAIL_FROM_NAME="Packistry"
+
+    #ports:
+      #- 82:80
+      #- 443:443
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.m-packistry.rule=Host(`packistry.mimach.fr`)"
+      - "traefik.http.routers.m-packistry.entrypoints=websecure,web"
+      - "traefik.http.routers.m-packistry.tls.certresolver=myresolver"
+      - "traefik.http.services.m-packistry.loadbalancer.server.port=80"
+      - "traefik.http.routers.m-packistry.tls=true"
+      - "traefik.http.middlewares.autodetect.contenttype=true"
+      - "traefik.http.middlewares.SslHeader.headers.AccessControlAllowMethods=GET,OPTIONS,PUT,POST,DELETE"
+      - "traefik.http.middlewares.SslHeader.headers.AccessControlAllowHeaders=Content-Type,Authorization"
+      - "traefik.http.middlewares.SslHeader.headers.customrequestheaders.X-Forwarded-Proto=https"
+    volumes:
+      - packistry_storage:/var/www/html/storage
+      - packistry_cache:/var/www/html/bootstrap/cache
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  packistry_storage:
+  packistry_cache:
+```
+
 ## License
 
 Packistry is open-sourced software licensed under the [GPL-3.0](./LICENSE).
